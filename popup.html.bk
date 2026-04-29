@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    body { font-family: system-ui, sans-serif; width: 340px; padding: 12px; margin: 0; }
+    h1 { font-size: 14px; margin: 0 0 10px; }
+    label { display: block; font-size: 12px; margin-top: 8px; }
+    input[type=text] { width: 100%; box-sizing: border-box; padding: 6px; font-size: 13px; }
+    .row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+    .check-row { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 12px; }
+    button { padding: 8px 12px; font-size: 13px; cursor: pointer; border-radius: 4px; border: 1px solid #ccc; background: #f5f5f5; }
+    button.primary { background: #1a73e8; color: white; border-color: #1a73e8; }
+    button.danger { background: #d93025; color: white; border-color: #d93025; }
+    .status { font-size: 12px; margin-top: 10px; padding: 6px; border-radius: 4px; background: #eee; }
+    .status.on { background: #e6f4ea; color: #137333; }
+    .hint { font-size: 11px; color: #666; margin-top: 4px; }
+    .methods { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .methods label { margin: 0; }
+    fieldset { border: 1px solid #ddd; border-radius: 4px; padding: 6px 10px; margin-top: 10px; }
+    legend { font-size: 11px; color: #666; padding: 0 4px; }
+    input:disabled, label:has(input:disabled), fieldset:has(input:disabled) { opacity: 0.92; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <h1>🎯 HARK</h1>
+
+  <label for="pattern">Patrón a capturar:</label>
+  <input type="text" id="pattern" value="prospecting-full" placeholder="prospecting-full" disabled />
+  <div class="hint">Valores fijos; no modificables desde la extensión.</div>
+
+  <div class="check-row">
+    <input type="checkbox" id="exactPath" disabled />
+    <label for="exactPath">Match exacto del path final (ej: solo <code>prospecting-full</code>, no <code>/saved/123</code>)</label>
+  </div>
+
+  <fieldset>
+    <legend>Filtrar por método HTTP — solo POST (fijo)</legend>
+    <div class="methods">
+      <label><input type="checkbox" class="method" value="GET" disabled /> GET</label>
+      <label><input type="checkbox" class="method" value="POST" checked disabled /> POST</label>
+      <label><input type="checkbox" class="method" value="PUT" disabled /> PUT</label>
+      <label><input type="checkbox" class="method" value="PATCH" disabled /> PATCH</label>
+      <label><input type="checkbox" class="method" value="DELETE" disabled /> DELETE</label>
+    </div>
+    <div class="hint">Los <code>OPTIONS</code> (preflight CORS) se ignoran siempre.</div>
+  </fieldset>
+
+  <div class="check-row">
+    <input type="checkbox" id="autoDownload" checked disabled />
+    <label for="autoDownload">Descargar automáticamente al matchear</label>
+  </div>
+
+  <div class="row">
+    <button id="toggle" class="primary">Iniciar captura</button>
+    <button id="clear">Reset</button>
+  </div>
+
+  <div class="status" id="status">Inactivo</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

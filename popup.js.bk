@@ -1,0 +1,63 @@
+const patternInput = document.getElementById('pattern');
+const autoDl = document.getElementById('autoDownload');
+const exactPath = document.getElementById('exactPath');
+const methodCheckboxes = document.querySelectorAll('.method');
+const toggleBtn = document.getElementById('toggle');
+const clearBtn = document.getElementById('clear');
+const statusEl = document.getElementById('status');
+
+const FIXED_PATTERN = 'prospecting-full';
+const FIXED_ALLOWED_METHODS = ['POST'];
+const FIXED_AUTO_DOWNLOAD = true;
+const FIXED_EXACT_PATH = false;
+
+async function getActiveTab() {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  return tab;
+}
+
+async function persistFixedSettings() {
+  await chrome.storage.local.set({
+    pattern: FIXED_PATTERN,
+    autoDownload: FIXED_AUTO_DOWNLOAD,
+    exactPath: FIXED_EXACT_PATH,
+    allowedMethods: FIXED_ALLOWED_METHODS
+  });
+}
+
+async function refreshUI() {
+  await persistFixedSettings();
+
+  patternInput.value = FIXED_PATTERN;
+  autoDl.checked = FIXED_AUTO_DOWNLOAD;
+  exactPath.checked = FIXED_EXACT_PATH;
+  methodCheckboxes.forEach(cb => {
+    cb.checked = FIXED_ALLOWED_METHODS.includes(cb.value);
+  });
+
+  const tab = await getActiveTab();
+  const { activeTabs = {} } = await chrome.storage.local.get('activeTabs');
+  const isOn = !!activeTabs[tab.id];
+
+  toggleBtn.textContent = isOn ? 'Detener captura' : 'Iniciar captura';
+  toggleBtn.classList.toggle('primary', !isOn);
+  toggleBtn.classList.toggle('danger', isOn);
+  statusEl.textContent = isOn ? `Capturando en pestaña ${tab.id}` : 'Inactivo';
+  statusEl.classList.toggle('on', isOn);
+}
+
+toggleBtn.addEventListener('click', async () => {
+  const tab = await getActiveTab();
+  const { activeTabs = {} } = await chrome.storage.local.get('activeTabs');
+  const isOn = !!activeTabs[tab.id];
+  const action = isOn ? 'stop' : 'start';
+  await chrome.runtime.sendMessage({ action, tabId: tab.id });
+  setTimeout(refreshUI, 200);
+});
+
+clearBtn.addEventListener('click', async () => {
+  await chrome.runtime.sendMessage({ action: 'clear' });
+  refreshUI();
+});
+
+refreshUI();
