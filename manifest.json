@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "HARK",
+  "version": "1.0.0",
+  "description": "Descarga automáticamente como HAR las peticiones de red que coincidan con un patrón configurable.",
+  "permissions": ["debugger", "downloads", "storage", "tabs", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "HARK"
+  }
+}
