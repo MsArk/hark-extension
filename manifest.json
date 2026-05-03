@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HARK",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Captura automáticamente respuestas de red que coinciden con un patrón configurable. Útil para debugging y extracción de datos.",
   "permissions": ["debugger", "downloads", "storage", "activeTab"],
   "host_permissions": ["<all_urls>"],
