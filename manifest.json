@@ -3,7 +3,7 @@
   "name": "HARK",
   "version": "1.0.0",
   "description": "Captura automáticamente respuestas de red que coinciden con un patrón configurable. Útil para debugging y extracción de datos.",
-  "permissions": ["debugger", "downloads", "storage", "tabs", "activeTab"],
+  "permissions": ["debugger", "downloads", "storage", "activeTab"],
   "host_permissions": ["<all_urls>"],
   "icons": {
     "16": "icons/icon-16.png",
